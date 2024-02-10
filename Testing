@@ -1,0 +1,10 @@
+#include <iostream>
+
+int main() {
+    // Display a welcome message
+    std::cout << "Welcome to the Banking System!" << std::endl;
+
+    // Your program logic goes here
+
+    return 0;
+}
