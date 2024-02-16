@@ -1,0 +1,20 @@
+﻿Challenges and solutions
+------------------------------------------
+I had a few problems I ran into with this code. When I first started to write the program outline I did not
+include a User Base class. I originally was going to make a Base class account with two derived classes called
+checkings and savings and that was it. I wanted to make them mimic each other excpet for their balance. I wanted them
+to both store the users name and id and information. I realized though, it would take a lot of code and make it a 
+little complicated. Making these two classes constantly sending information back and forth to each other making
+sure they mimiced the same information. This allowed for errors. If information was updated on one of the objects and not 
+the other it would ruin the whole program. I decided to use encapsulation and make a new class all together. So 
+I made a user class that stores a name and a id. That was the id is unique to the user and then when we call
+certain aspects of the users account (checkings and savings) we can just append a c or a s on the end of the
+id depending on which account was being displayed. Another issue I had and have not figured out yet is how to make the 
+program pause and wait for user to press enter or something. I really would like a fake loading screen or even a 
+pause for a bit so that the user can gather whats going on when the screen changes instead of a whole bunch of code at once.
+To solve this in the future I can probably either add another piece of code involving cin or even try to find some
+sort c++ code that will actually take in real time and delay the next code for a couple seconds. I could do it 
+manually with a counter for a for loop or something as well if there is no predefined delay function in C++. Sometimes with
+this program entering in the password to do everything becomes a little tedious. I have an idea in the future to make the 
+user have the password only in the beginning (mimicing what it would be like to enter a bank account). I will also
+make the user enter a password when wanting to change information. For example, changing the name or password

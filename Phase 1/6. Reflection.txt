@@ -1,0 +1,13 @@
+Reflections
+-----------------------------
+Doing this allowed me to actually put the ideas I have learned to the test. For example,
+dealing with Base classes and derived classes. This project made me actually have to think
+on how I am going to implement these things. It is different reading or learning about it. Doing it
+is the best way to get your head around it. It was definitely difficult. It took a lot of trial and
+error to see what worked and what did not. I even found myself realizing I could remove a bunch
+of code and just use a function to rerun the same code as needed. This project that I have made
+uses GitHub (which I still don't fully understand so the code is in a text file for now), I have
+created a outline that goes through all the basic functions and goals of the program, a working 
+coding model (a beta model displaying all the ideas in working and functional manner), I have 
+extensively commented and described each step of the code in great detail, and there are operator 
+overloaders and advanced functions placed in the structure of the code.

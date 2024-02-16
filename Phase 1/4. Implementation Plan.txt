@@ -1,0 +1,24 @@
+﻿
+Implementation Plan:
+
+Detail the strategy for implementing advanced banking functions, including transaction history, account management, and user authentication.
+Explain the planned usage of operator overloading to enhance code usability and readability.
+
+-------------------------------------------------------------------------------------------------------------------------------------------------
+
+Transaction History is going to be a string array. It will store everytime the balance is either added to or taken away from. It will let user know
+not only current balance over the transactions, but also how much was taken or added.
+
+Account management properties will surround a password. I am making a User class that will have a name, id, password. These will all be assigned 
+default values. The User class will have a function called checkPassword(). This wil allow the user to enter a attempt at the password. If the 
+attempt is correct then that means that they will be allowed on to the next part, what ever it may be. The program will allow user to change name,
+change password, view balance, deposit, and withdraw. Each one of these items will have the user try to enter the correct password through checkPassword().
+User can only change information in the account or minipulate the balance with the use of a passwrod. 
+
+The usage for the operator overloading will consist of making it so that when a Account type object has a double being added to it. In reality what will be happening
+is that the double will be being added to the balance variable instead the account instance. Same for the subtraction oppertor overloader. This code allows me to place 
+in the deposit function. U + 7. This will take balance (lets say its at 0) and it will add 7 to it. Same for subtraction. In these operator overloader function, there will be a increment_index 
+value that will increase each time. This will take the next possible place in a string array that is open. After that we will plus in that increment_index into the string
+array. We will then take that selected element of the array, plug in the balance and how much was added or taken away from. So inside these operator overloaders is where all the code
+goes for storing transaction history. It also makes it easier for anyone working on the project to under stand the operator overloader function. This will be because the code will
+probably run some sort guidelines come up by who ever is working on the project. They will be the instance with a double added to it and instantly know what it means.

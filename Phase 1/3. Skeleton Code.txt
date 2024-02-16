@@ -1,0 +1,625 @@
+﻿
+#include <iostream>
+using namespace std;
+//Base class Account ==================================================================================================================================
+class Account
+{
+    //protected member variables
+    protected:
+        //Keeps track of the account balance
+        double balance;
+        //Array to keep track of history given 
+        //100 spaces to store history of transactions 
+        string transaction_history[100];
+        //Value will add one to itself everytime the balance 
+        //added to or subtracted to. Will be used to make 
+        //sure the proper index of transaction_history Will
+        //accurately take in the next transaction
+        int increment_THI = 0;
+    public:
+        //Constructor: Balance will automatically initilize to 0
+        Account():balance(0)
+        {
+            //Add first entry to transaction_history ("balance starts of at 0")
+            transaction_history[0] = "Balance: 0";
+        }
+        
+        //Function meant to be overridden for getting Balance
+        virtual void getBalance()
+        {
+            cout << "Account: $" << balance << endl;
+            
+        }
+        
+        //Overloaded operator for adding to balance
+        //Instance + a double value will = balance of Instance + the double value
+        //& for referencing the current instance 
+         Account& operator+(double num)
+        {
+            //balance adds num thrown in to itself
+            balance += num; 
+            //index tracker adds one to itself
+            increment_THI++;
+            //store the entry in the correct index of transaction_history
+            transaction_history[increment_THI] =   to_string(num) + " added. Balance: " + to_string(balance);
+            
+            //return a pointer to that current instace
+            return *this;
+        }
+        
+         //Overloaded operator for adding to balance
+        //Instance - a double value will = balance of instance - the double value
+        //& for referencing the current instance 
+         virtual Account& operator-(double num)
+        {
+            //balance subtracts num thrown in from itself
+            balance -= num; 
+            //index tracker adds one to itself
+            increment_THI++;
+            //store the entry in the correct index of transaction_history
+            transaction_history[increment_THI] =  to_string(num) + " subtracted. Balance: " + to_string(balance);
+            
+            //return a pointer to that current instace
+            return *this;
+        }
+        
+        //function to load transaction history
+        void getTransactionHistory()
+        {
+            //display heading
+            cout << endl;
+            cout << "Displaying transaction_history" << endl;
+            cout << "======================" << endl;
+            //for loop that will run a certain amount of times 
+            //depending on what increment_THI got to
+            //which corresponds with length of the array
+            for (int i = 0; i <= increment_THI; i++)
+                {
+                    //prints out each element in the transaction_history array
+                    cout << i + 1 << ": " << transaction_history[i] << endl;
+                }
+                //let user know you have reached end of histroy
+                    cout << "End of transaction history" << endl;
+            
+        }
+};
+
+//derived class from account ==============================================================================================================================
+class Savings: public Account
+{   
+    //overridden getbalance function
+     public:
+        void getBalance() override
+        {
+            //changes the label for the account to Savings account
+            cout << "Savings account: $" << balance << endl;
+            
+        }
+    
+    //overridden operator overlaoder function for subtraction
+     Account& operator-(double num) override
+        {
+            //DOES NOT ALLOW THE VALUE TO GO BELOW 0
+            //balance subtracts num thrown in from itself
+            if (balance - num >= 0)
+            {
+                 balance -= num; 
+            //index tracker adds one to itself
+            increment_THI++;
+            //store the entry in the correct index of transaction_history
+            transaction_history[increment_THI] =  to_string(num) + " subtracted. Balance: " + to_string(balance);
+            
+            //return a pointer to that current instace
+            return *this;
+            }
+            
+            else{
+                cout << endl << "Cannot over draft savings account" << endl;
+                    return *this;
+            }
+           
+        }
+};
+
+//derived class from account ==============================================================================================================================
+class Checkings: public Account
+{   
+    //overridden getBalance function
+    public:
+        void getBalance() override
+        {
+            //displays checkings account with label checkings account
+            cout << "Checkings account: $" << balance << endl;
+            
+        }
+};
+
+//User Base class =========================================================================================================================================
+class User
+{
+    //store user names
+    //store user id
+    //store user password
+    private:
+        string name;
+        string id;
+        int password;
+        
+    
+    public:
+    //constructor that give protected variables all default values
+        User()
+        {
+            name = "Generic Name";
+            id = "001";
+            password = 1234;
+        }
+        
+       
+    //store a instance of checkings and savings account in user
+        Checkings userCheckings;
+        Savings userSavings;
+        
+        //deposit option 
+        void deposit()
+        {
+            //store choice whether 
+            //they are depositing 
+            //in savings or checkings
+            int choice;
+            
+            //end loop will be false
+            bool endLoop = false;
+            
+            //while endloop is false
+            while(!endLoop)
+            {
+                
+                //Display the users choices
+                cout << "Choose to deposit into checkings or savings" 
+                << endl
+                <<"1 for checkings, 2 for savings, 3 to cancel" 
+                <<endl
+                << "******************************************"
+                << endl;
+                
+                //take in the users choice
+                cin >> choice;
+                
+                //if one then deposit in checkings
+                if (choice == 1)
+                {
+                    //inform user of their choice
+                    cout << "You have selected Checkings" << endl;
+                    double amount;
+                    cout << "How much money will be deposited?" << endl
+                    << "******************************************" << endl;
+                    cin >> amount;
+                    if (amount > 0)
+                        {
+                            userCheckings + amount;
+                        }
+                    endLoop = true;
+                }
+                
+                //if two then deposit in savings
+                else if (choice == 2)
+                {
+                    cout << "You have selected Savings" << endl;
+                    double amount;
+                    cout << "How much money will be deposited?" << endl;
+                    cin >> amount;
+                    if (amount > 0)
+                        {
+                            userSavings + amount;
+                        }
+                    endLoop = true;
+                }
+                
+                //if three then cancel
+                else if (choice == 3)
+                {
+                    
+                    endLoop = true;
+                }
+                
+                //Invalid response restart the loop
+                else
+                {
+                    cout << endl;
+                    cout << "Invalid Response";
+                    cout << endl;
+                }
+                
+                
+                
+            }
+            
+            
+            
+        }
+        
+         void withdraw()
+        {
+            //store choice whether 
+            //they are widthdrawing 
+            //from savings or checkings
+            int choice;
+            
+            //end loop will be false
+            bool endLoop = false;
+            
+            //while endloop is false
+            while(!endLoop)
+            {
+                
+                //Display the users choices
+                cout << "Choose to withdraw from checkings or savings" 
+                << endl
+                <<"1 for checkings, 2 for savings, 3 to cancel" 
+                <<endl
+                << "******************************************"
+                << endl;
+                
+                //take in the users choice
+                cin >> choice;
+                
+                //if one then deposit in checkings
+                if (choice == 1)
+                {
+                    //inform user of their choice
+                    cout << "You have selected Checkings" << endl;
+                    double amount;
+                    cout << "=======================================" << endl;
+                    cout << "How much money will be withdrawn?" << endl;
+                    cin >> amount;
+                    if (amount > 0)
+                        {
+                            //using operator overloader function
+                            userCheckings - amount;
+                        }
+                    endLoop = true;
+                }
+                
+                //if two then deposit in savings
+                else if (choice == 2)
+                {
+                    cout << "You have selected Savings" << endl;
+                    double amount;
+                    cout << "===========================================" << endl;
+                    cout << "How much money will be withdrawn?" << endl;
+                    cin >> amount;
+                    if (amount > 0)
+                        {
+                            //using operator overloader function
+                            userSavings - amount;
+                        }
+                    endLoop = true;
+                }
+                
+                //if three then cancel
+                else if (choice == 3)
+                {
+                    
+                    endLoop = true;
+                }
+                
+                //Invalid response restart the loop
+                else
+                {
+                    cout << endl;
+                    cout << "Invalid Response";
+                    endLoop = true;
+                }
+                
+                
+                
+            }
+            
+        }
+        // function to return name
+         string getName()
+        {
+            return name;
+        }
+        
+        //function to return id
+        string getId()
+        {
+            return id;
+        }
+        
+        //function to return password
+        int getPassword()
+        {
+            return password;
+        }
+        
+        //function to view balance that takes in 
+        //user id and name
+        void viewBalance(string name, string id)
+        {   
+            //displays users name followed by account
+            cout << name << "'s Account" << endl;
+            cout << "+++++++++++++++++++++++++++++" << endl;
+            
+            //show user id with c at end
+            cout << id << "C" << " ";
+            //show balance for checkings
+            userCheckings.getBalance();
+            
+            //show user id with s at the end
+            cout << id << "S" << " ";
+            //show balance for savings 
+            userSavings.getBalance();
+        }
+        
+        //check password function to make sure a 
+        //user enters a password right
+        bool checkPassword()
+        {
+            //have user attempt to enter password
+            int attempt;
+            cout << "Enter password: ";
+            cin >> attempt;
+            cout << endl;
+            //if correct
+            if (attempt == password)
+            {
+                //return true
+                return true;
+            }
+            
+            //if wrong
+            else
+            {
+                //return false
+                return false;
+            }
+        }
+        //change password function that takes in a new password
+        void changePassword(int newPassword)
+        {
+            //replace old password with new one
+           password = newPassword;
+        }
+        
+        //change name function that takes in a new name
+        void changeName(string newname)
+        {
+            //replace old name with new one
+             name = newname;
+        }
+        
+        
+    
+};
+
+
+
+
+int main()
+{
+    //make a instance of user
+    User U;
+    
+    //show the users information
+    cout << "Welcome to a somewhat Bank Account!" << endl;
+    cout << "************************************************" << endl << endl;
+    cout << "Your current id: " << U.getId() << endl;
+    cout << "Your current username: " << U.getName() << endl;
+    cout << "Your current password: " << U.getPassword() << endl << endl;
+    cout << "CHANGING PASSWORD STRONGLY RECOMMENDED" << endl;
+    cout << "Press enter to continue" << endl;
+    
+
+    
+    cout << endl << endl << endl;
+
+    //nonstop loop
+    while (true)
+    {
+        //give user options
+        cout << endl;
+        cout << "Choose from the following options" << endl;
+        cout << "=========================================" << endl;
+        cout << "0: End program" << endl;
+        cout << "1: Display balance" << endl;
+        cout << "2: Display transaction history" << endl;
+        cout << "3: Deposit" << endl;
+        cout << "4: Withdraw" << endl;
+        cout << "5: Change name" << endl;
+        cout << "6: Change password" << endl;
+        cout << endl;
+
+        //take in users choice 
+        int mainChoice;
+        
+        //choice for showing transaction history
+        int historyChoice = 0;
+        cin >> mainChoice;
+        
+        //if the choice is
+        switch(mainChoice)
+        {
+            //end program
+            case 0:
+                return 0;
+            
+            //display balance   
+            case 1:
+                
+                cout << endl;
+                cout << "You have chosen to DISPLAY BALANCE" << endl;
+                cout << "====================================" << endl;
+                //if users entered password is correct
+                if (U.checkPassword())
+                {
+                    
+                    //view balance function with user name and id plugged in
+                    cout << "SUCCESS!!" << endl << endl;
+                    U.viewBalance(U.getName(),U.getId());
+                    cout << endl << endl << endl; 
+                }
+                
+                //if it is not correct
+                else
+                {
+                    //tell user
+                    cout << "WRONG PASSWORD" << endl << endl;
+                }
+                    
+                    break;
+                //display transaction history
+            case 2:
+                cout << endl;
+                cout << "You have chosen to DISPLAY TRANSACTION HISTORY" << endl;
+                cout << "=======================================================" << endl;
+            
+                //let user choose which account to show history
+                cout << "1: Savings. 2: Checkings" << endl;
+                cout << "==============================================" << endl;
+                cin >> historyChoice;
+                
+                //display savings
+                if (historyChoice == 1)
+                {
+                     U.userSavings.getTransactionHistory();
+                }
+                
+                //display checkings
+                else if (historyChoice == 2)
+                {
+                     U.userCheckings.getTransactionHistory();
+                }
+                
+                //invalid 
+                else
+                {
+                    cout << "INVALID RESPONSE";
+                }
+                
+               
+                
+                cout << endl << endl << endl;
+                break;
+                
+                //desposit
+            case 3:
+                cout << endl;
+                cout << "You have chosen to DEPOSIT" << endl;
+                cout << "====================================" << endl << endl;
+                //check if user enters right password 
+                //if right then 
+                if (U.checkPassword())
+                {
+                    //deposit function
+                    cout << "SUCCESS!!" << endl << endl;
+                    U.deposit();
+                    cout << endl;
+                    //view new balance
+                    U.viewBalance(U.getName(),U.getId());
+                    cout << endl << endl << endl;
+                   
+                }
+                
+                //password was wrong 
+                else
+                {
+                    cout << "WRONG PASSWORD";
+                }
+                
+                break;
+                //withdraw
+            case 4:
+                cout << endl;
+                cout << "You have chosen to WITHDRAW" << endl;
+                cout << "====================================" << endl << endl;
+                
+                //have user enter password, if correct then,
+                 if (U.checkPassword())
+                {
+                    //withdraw function
+                    cout << "SUCCESS!!" << endl << endl;
+                    U.withdraw();
+                    cout << endl;
+                    
+                    //view balance
+                    U.viewBalance(U.getName(),U.getId());
+                    cout << endl << endl << endl;
+                   
+                }
+                
+                else
+                {
+                    cout << "WRONG PASSWORD";
+                }
+                
+                break;
+                
+                //change name
+            case 5:
+                cout << endl;
+                cout << "You have chosen to CHANGE NAME";
+                cout << endl << endl << endl;
+                
+                //if users password entered is right 
+                if (U.checkPassword())
+                {
+                    //let user change name
+                    cout << "SUCCESS!!" << endl << endl;
+                    cout << "============================" << endl << endl;
+                    cout << "Enter new name: ";
+                    string newName;
+                    cin >> newName;
+                    U.changeName(newName);
+                    
+                    
+                    cout << endl << endl << endl; 
+                }
+                
+                //if password is wrong 
+                else
+                {
+                    cout << "WRONG PASSWORD" << endl << endl;
+                }
+                
+                break;
+                
+                //change password 
+            case 6:
+                cout << endl;
+                cout << "You have chosen to CHANGE PASSWORD";
+                cout << endl << endl << endl;
+                
+                //if user enters the right password then
+                if (U.checkPassword())
+                {
+                    //Let user change password
+                    cout << "SUCCESS!!" << endl << endl;
+                    cout << "============================" << endl << endl;
+                    cout << "Enter new password: ";
+                    int newPassword;
+                    cin >> newPassword;
+                    U.changePassword(newPassword);
+                    
+                    
+                    cout << endl << endl << endl; 
+                }
+                
+                else
+                {
+                    cout << "WRONG PASSWORD" << endl << endl;
+                }
+                
+                break;
+                
+           
+                
+        }
+    }
+}
+
+            //=================================================================================================
+
+
